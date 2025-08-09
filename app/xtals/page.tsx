@@ -52,7 +52,7 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
   try {
     // Get all data from the original xtal table
     const xtalRows = (await db.all('SELECT * FROM xtal ORDER BY title')) as unknown[]
-    
+
     // Create a map for quick lookup of crystal data by name
     const crystalLookup = new Map<string, Record<string, unknown>>()
     for (const row of xtalRows) {
@@ -66,15 +66,15 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
 
     for (const row of xtalRows) {
       const xtal = row as Record<string, unknown>
-      
+
       // Extract basic crystal info
       const crystal: Crystal = {
         id: Number(xtal.id),
         name: String(xtal.title || 'Unknown'),
-        type: String(xtal.font || '').replace(/[\[\]]/g, ''),
+        type: String(xtal.font || '').replace(/[[\]]/g, ''),
         sell_price: String(xtal.p || ''),
         process_cost: String(xtal.p2 || ''),
-        description: ''
+        description: '',
       }
 
       // Extract stats from the xtal table columns
@@ -86,7 +86,7 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
         { nameCol: 'div', valueCol: 'column_11' },
         { nameCol: 'div6', valueCol: 'column_13' },
         { nameCol: 'div7', valueCol: 'column_15' },
-        { nameCol: 'div11', valueCol: 'column_17' }
+        { nameCol: 'div11', valueCol: 'column_17' },
       ]
 
       for (const mapping of statMappings) {
@@ -100,7 +100,7 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
             stat_name: String(statName),
             stat_value: Number(statValue),
             is_upgrade_specific: false,
-            upgrade_type: ''
+            upgrade_type: '',
           })
         }
       }
@@ -111,13 +111,25 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
 
       // Drop data patterns in xtal table
       const dropMappings = [
-        { monsterCol: 'a', urlCol: 'url', levelCol: 'avoidwrap', locationCol: 'a4', locationUrlCol: 'url5' },
-        { monsterCol: 'a8', urlCol: 'url9', levelCol: 'avoidwrap10', locationCol: 'a12', locationUrlCol: 'url13' }
+        {
+          monsterCol: 'a',
+          urlCol: 'url',
+          levelCol: 'avoidwrap',
+          locationCol: 'a4',
+          locationUrlCol: 'url5',
+        },
+        {
+          monsterCol: 'a8',
+          urlCol: 'url9',
+          levelCol: 'avoidwrap10',
+          locationCol: 'a12',
+          locationUrlCol: 'url13',
+        },
       ]
 
       for (const mapping of dropMappings) {
         const monsterName = xtal[mapping.monsterCol]
-        
+
         if (monsterName) {
           drops.push({
             id: dropId++,
@@ -126,7 +138,7 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
             monster_url: String(xtal[mapping.urlCol] || ''),
             monster_level: String(xtal[mapping.levelCol] || '').replace(/[()]/g, ''),
             location_name: String(xtal[mapping.locationCol] || ''),
-            location_url: String(xtal[mapping.locationUrlCol] || '')
+            location_url: String(xtal[mapping.locationUrlCol] || ''),
           })
         }
       }
@@ -139,10 +151,10 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
       if (xtal.div22 === 'Used For' && xtal.a24) {
         const usageType = String(xtal.title23 || 'Unknown')
         const itemName = String(xtal.a24)
-        
+
         let locationName = ''
         let locationUrl = ''
-        
+
         // For "Upgrade Into" items, look up the target crystal's location
         if (usageType === 'Upgrade Into') {
           const targetCrystal = crystalLookup.get(itemName)
@@ -156,7 +168,7 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
           locationName = String(xtal.a26 || '')
           locationUrl = String(xtal.url27 || '')
         }
-        
+
         usage.push({
           id: usageId++,
           crystal_id: crystal.id,
@@ -164,7 +176,7 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
           item_name: itemName,
           item_url: String(xtal.url25 || ''),
           location_name: locationName,
-          location_url: locationUrl
+          location_url: locationUrl,
         })
       }
 
@@ -172,7 +184,7 @@ async function getCrystalDataFromXtal(): Promise<CrystalCompleteView[]> {
         crystal,
         stats,
         drops,
-        usage
+        usage,
       })
     }
 
@@ -188,8 +200,8 @@ export default async function XtalsPage() {
 
   return (
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
-      <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-        <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+      <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+        <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
           Crystal Database
         </h1>
         <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">

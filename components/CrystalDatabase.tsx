@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import CrystalCard from './CrystalCard'
+import CrystalCard from '@/components/CrystalCard'
 
 interface Crystal {
   id: number
@@ -64,34 +65,35 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
 
   // Get unique values for filters
   const uniqueTypes = useMemo(() => {
-    const types = initialData.map(item => item.crystal.type).filter(Boolean)
+    const types = initialData.map((item) => item.crystal.type).filter(Boolean)
     return [...new Set(types)].sort()
   }, [initialData])
 
   const uniqueStats = useMemo(() => {
-    const stats = initialData.flatMap(item => item.stats.map(stat => stat.stat_name))
+    const stats = initialData.flatMap((item) => item.stats.map((stat) => stat.stat_name))
     return [...new Set(stats)].sort()
   }, [initialData])
 
   const uniqueUsageTypes = useMemo(() => {
-    const usageTypes = initialData.flatMap(item => item.usage.map(usage => usage.usage_type))
+    const usageTypes = initialData.flatMap((item) => item.usage.map((usage) => usage.usage_type))
     return [...new Set(usageTypes)].filter(Boolean).sort()
   }, [initialData])
 
   // Filter and sort data
   const filteredAndSortedData = useMemo(() => {
-    let filtered = initialData.filter(item => {
-      const matchesSearch = searchTerm === '' || 
+    const filtered = initialData.filter((item) => {
+      const matchesSearch =
+        searchTerm === '' ||
         item.crystal.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.crystal.type.toLowerCase().includes(searchTerm.toLowerCase())
-      
+
       const matchesType = typeFilter === '' || item.crystal.type === typeFilter
-      
-      const matchesStat = statFilter === '' || 
-        item.stats.some(stat => stat.stat_name === statFilter)
-      
-      const matchesUsage = usageFilter === '' || 
-        item.usage.some(usage => usage.usage_type === usageFilter)
+
+      const matchesStat =
+        statFilter === '' || item.stats.some((stat) => stat.stat_name === statFilter)
+
+      const matchesUsage =
+        usageFilter === '' || item.usage.some((usage) => usage.usage_type === usageFilter)
 
       return matchesSearch && matchesType && matchesStat && matchesUsage
     })
@@ -99,7 +101,7 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
     // Sort data
     filtered.sort((a, b) => {
       let comparison = 0
-      
+
       switch (sortBy) {
         case 'name':
           comparison = a.crystal.name.localeCompare(b.crystal.name)
@@ -155,11 +157,11 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
   return (
     <div className="space-y-6">
       {/* Search and Filters */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {/* Search */}
           <div className="xl:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Search
             </label>
             <input
@@ -167,64 +169,70 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search crystals..."
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
 
           {/* Type Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Type
             </label>
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">All Types</option>
-              {uniqueTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
+              {uniqueTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </select>
           </div>
 
           {/* Stat Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Has Stat
             </label>
             <select
               value={statFilter}
               onChange={(e) => setStatFilter(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">All Stats</option>
-              {uniqueStats.map(stat => (
-                <option key={stat} value={stat}>{stat}</option>
+              {uniqueStats.map((stat) => (
+                <option key={stat} value={stat}>
+                  {stat}
+                </option>
               ))}
             </select>
           </div>
 
           {/* Usage Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Used For
             </label>
             <select
               value={usageFilter}
               onChange={(e) => setUsageFilter(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">All Uses</option>
-              {uniqueUsageTypes.map(usage => (
-                <option key={usage} value={usage}>{usage}</option>
+              {uniqueUsageTypes.map((usage) => (
+                <option key={usage} value={usage}>
+                  {usage}
+                </option>
               ))}
             </select>
           </div>
         </div>
 
         {/* Sort and Actions */}
-        <div className="flex flex-wrap items-center justify-between mt-4 gap-4">
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -233,7 +241,7 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+                className="rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value="name">Name</option>
                 <option value="type">Type</option>
@@ -242,10 +250,10 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
                 <option value="usageCount">Usage Count</option>
               </select>
             </div>
-            
+
             <button
               onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm hover:bg-gray-50 dark:hover:bg-gray-600"
+              className="rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
             >
               {sortOrder === 'asc' ? '↑ Ascending' : '↓ Descending'}
             </button>
@@ -254,11 +262,11 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
           <div className="flex items-center space-x-4">
             <button
               onClick={clearFilters}
-              className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100"
             >
               Clear Filters
             </button>
-            
+
             <div className="text-sm text-gray-600 dark:text-gray-400">
               {filteredAndSortedData.length} of {initialData.length} crystals
             </div>
@@ -280,11 +288,11 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
+        <div className="rounded-lg bg-white py-12 text-center dark:bg-gray-800">
           <p className="text-gray-500 dark:text-gray-400">No crystals match your current filters</p>
           <button
             onClick={clearFilters}
-            className="mt-2 px-4 py-2 text-blue-600 dark:text-blue-400 hover:underline"
+            className="mt-2 px-4 py-2 text-blue-600 hover:underline dark:text-blue-400"
           >
             Clear filters to see all crystals
           </button>
@@ -293,15 +301,15 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center space-x-2 bg-white dark:bg-gray-800 rounded-lg p-4">
+        <div className="flex items-center justify-center space-x-2 rounded-lg bg-white p-4 dark:bg-gray-800">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="rounded-md border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:hover:bg-gray-700"
           >
             Previous
           </button>
-          
+
           {[...Array(Math.min(5, totalPages))].map((_, i) => {
             let pageNum
             if (totalPages <= 5) {
@@ -318,25 +326,25 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
               <button
                 key={pageNum}
                 onClick={() => handlePageChange(pageNum)}
-                className={`px-3 py-2 text-sm border rounded-md ${
+                className={`rounded-md border px-3 py-2 text-sm ${
                   currentPage === pageNum
-                    ? 'bg-blue-500 text-white border-blue-500'
-                    : 'border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'border-blue-500 bg-blue-500 text-white'
+                    : 'border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
                 }`}
               >
                 {pageNum}
               </button>
             )
           })}
-          
+
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="rounded-md border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:hover:bg-gray-700"
           >
             Next
           </button>
-          
+
           <div className="ml-4 text-sm text-gray-600 dark:text-gray-400">
             Page {currentPage} of {totalPages}
           </div>
