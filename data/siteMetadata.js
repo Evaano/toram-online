@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'NotCoryn',
   headerTitle: 'NotCoryn',
-  description: 'Toram Online crystal database and tools',
+  description: 'Toram Online database and tools',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
@@ -99,4 +99,4 @@ const siteMetadata = {
   },
 }
 
-module.exports = siteMetadata
+export default siteMetadata

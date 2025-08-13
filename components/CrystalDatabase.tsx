@@ -1,8 +1,8 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
 import CrystalCard from '@/components/CrystalCard'
+import Pagination from '@/components/Pagination'
 
 interface Crystal {
   id: number
@@ -161,10 +161,14 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {/* Search */}
           <div className="xl:col-span-2">
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="search"
+              className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Search
             </label>
             <input
+              id="search"
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -175,10 +179,14 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
 
           {/* Type Filter */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="typeFilter"
+              className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Type
             </label>
             <select
+              id="typeFilter"
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
               className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
@@ -194,10 +202,14 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
 
           {/* Stat Filter */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="statFilter"
+              className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Has Stat
             </label>
             <select
+              id="statFilter"
               value={statFilter}
               onChange={(e) => setStatFilter(e.target.value)}
               className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
@@ -213,10 +225,14 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
 
           {/* Usage Filter */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="usageFilter"
+              className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Used For
             </label>
             <select
+              id="usageFilter"
               value={usageFilter}
               onChange={(e) => setUsageFilter(e.target.value)}
               className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
@@ -235,10 +251,14 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
         <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="sortBy"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Sort by:
               </label>
               <select
+                id="sortBy"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
@@ -299,57 +319,14 @@ export default function CrystalDatabase({ initialData }: CrystalDatabaseProps) {
         </div>
       )}
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center space-x-2 rounded-lg bg-white p-4 dark:bg-gray-800">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:hover:bg-gray-700"
-          >
-            Previous
-          </button>
-
-          {[...Array(Math.min(5, totalPages))].map((_, i) => {
-            let pageNum
-            if (totalPages <= 5) {
-              pageNum = i + 1
-            } else if (currentPage <= 3) {
-              pageNum = i + 1
-            } else if (currentPage >= totalPages - 2) {
-              pageNum = totalPages - 4 + i
-            } else {
-              pageNum = currentPage - 2 + i
-            }
-
-            return (
-              <button
-                key={pageNum}
-                onClick={() => handlePageChange(pageNum)}
-                className={`rounded-md border px-3 py-2 text-sm ${
-                  currentPage === pageNum
-                    ? 'border-blue-500 bg-blue-500 text-white'
-                    : 'border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
-                }`}
-              >
-                {pageNum}
-              </button>
-            )
-          })}
-
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:hover:bg-gray-700"
-          >
-            Next
-          </button>
-
-          <div className="ml-4 text-sm text-gray-600 dark:text-gray-400">
-            Page {currentPage} of {totalPages}
-          </div>
-        </div>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        totalItems={filteredAndSortedData.length}
+        itemsPerPage={itemsPerPage}
+        itemName="crystals"
+      />
     </div>
   )
 }

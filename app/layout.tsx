@@ -1,6 +1,4 @@
 import 'css/tailwind.css'
-import 'pliny/search/algolia.css'
-import 'remark-github-blockquote-alert/alert.css'
 
 import { Space_Grotesk } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
@@ -98,10 +96,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
-            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-              <Header />
-              <main className="mb-auto">{children}</main>
-            </SearchProvider>
+            <Header />
+            <main className="mb-auto">{children}</main>
             <Footer />
           </SectionContainer>
         </ThemeProviders>

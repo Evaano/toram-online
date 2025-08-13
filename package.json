@@ -5,9 +5,10 @@
   "scripts": {
     "start": "next dev",
     "dev": "cross-env INIT_CWD=$PWD next dev",
-    "build": "cross-env INIT_CWD=$PWD next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
+    "build": "cross-env INIT_CWD=$PWD next build",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,mdx,mjs}\"",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
     "prepare": "husky"
   },
@@ -75,5 +76,6 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@3.6.1",
+  "type": "module"
 }

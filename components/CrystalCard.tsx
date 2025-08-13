@@ -43,6 +43,49 @@ interface CrystalCardProps {
   usage: CrystalUsage[]
 }
 
+function getCrystalTypeBadgeClass(type: string): string {
+  const t = type.toLowerCase()
+  // If a color is specified in parentheses like "(Yellow)", prefer that color
+  const colorMatch = t.match(
+    /(?:\(|\[)\s*(red|blue|green|yellow|purple|pink|orange|teal|cyan|amber|indigo|fuchsia|sky)\s*(?:\)|\])/i
+  )
+  if (colorMatch) {
+    const c = colorMatch[1].toLowerCase()
+    const colorMap: Record<string, string> = {
+      red: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+      blue: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+      green: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+      yellow: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+      purple: 'bg-purple-200 text-purple-900 dark:bg-purple-800 dark:text-purple-100',
+      pink: 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200',
+      orange: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+      teal: 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200',
+      cyan: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200',
+      amber: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
+      indigo: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
+      fuchsia: 'bg-fuchsia-100 text-fuchsia-800 dark:bg-fuchsia-900 dark:text-fuchsia-200',
+      sky: 'bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200',
+    }
+    if (colorMap[c]) return colorMap[c]
+  }
+  if (/enhancer/.test(t)) {
+    return 'bg-purple-200 text-purple-900 dark:bg-purple-800 dark:text-purple-100'
+  }
+  if (/weapon/.test(t)) {
+    return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+  }
+  if (/armor|armour/.test(t)) {
+    return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+  }
+  if (/additional/.test(t)) {
+    return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+  }
+  if (/special/.test(t)) {
+    return 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200'
+  }
+  return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+}
+
 export default function CrystalCard({ crystal, stats, drops, usage }: CrystalCardProps) {
   return (
     <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -50,7 +93,11 @@ export default function CrystalCard({ crystal, stats, drops, usage }: CrystalCar
       <div className="mb-4 border-b border-gray-200 pb-4 dark:border-gray-700">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{crystal.name}</h2>
         <div className="mt-2 flex items-center gap-4">
-          <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+          <span
+            className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${getCrystalTypeBadgeClass(
+              crystal.type
+            )}`}
+          >
             {crystal.type}
           </span>
           {crystal.sell_price && (
