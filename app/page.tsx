@@ -13,7 +13,7 @@ export default function Page() {
         </p>
       </div>
 
-      <div className="grid gap-6 py-10 sm:grid-cols-2">
+      <div className="grid gap-6 py-10 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href="/xtals"
           className="rounded-lg border border-gray-200 p-6 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
@@ -33,6 +33,18 @@ export default function Page() {
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
             Weapons, armor, and more with sorting and filters.
+          </p>
+        </Link>
+
+        <Link
+          href="/auto-statting"
+          className="rounded-lg border border-gray-200 p-6 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
+        >
+          <h2 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            Auto Statting
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Lazy Tanaka's automatic stat calculation and formulas.
           </p>
         </Link>
       </div>

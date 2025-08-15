@@ -1,9 +1,11 @@
 import { Metadata } from 'next'
 import AutoStattingCalculator from '@/components/AutoStattingCalculator'
+import StattingFormulaDatabase from '@/components/StattingFormulaDatabase'
 
 export const metadata: Metadata = {
   title: 'Lazy Tanaka Auto Statting - Toram Online Database',
-  description: 'Automatically calculate optimal stat distributions for your Toram Online character builds',
+  description:
+    'Automatically calculate optimal stat distributions and browse statting formulas for your Toram Online character builds',
 }
 
 export default function AutoStattingPage() {
@@ -14,13 +16,18 @@ export default function AutoStattingPage() {
           Lazy Tanaka Auto Statting
         </h1>
         <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-          Automatically calculate optimal stat distributions for your character builds. 
-          Let the system do the heavy lifting while you focus on gameplay!
+          Automatically calculate optimal stat distributions and browse comprehensive statting
+          formulas for your Toram Online character builds. Inspired by Tanaka's Buki Proper statting
+          tools and enhanced with modern automation.
         </p>
       </div>
 
-      <div className="py-10">
+      <div className="container py-12">
         <AutoStattingCalculator />
+
+        <div className="mt-16">
+          <StattingFormulaDatabase />
+        </div>
       </div>
     </div>
   )
