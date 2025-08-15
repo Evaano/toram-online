@@ -41,10 +41,10 @@ export default function Page() {
           className="rounded-lg border border-gray-200 p-6 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
         >
           <h2 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">
-            Auto Statting
+            Statting Simulator
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Lazy Tanaka's automatic stat calculation and formulas.
+            Test statting formulas and calculate success rates for equipment enhancement.
           </p>
         </Link>
       </div>
