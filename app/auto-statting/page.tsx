@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
 import ToramStattingSimulator from '@/components/ToramStattingSimulator'
+import StattingWorkbench from '@/components/StattingWorkbench'
 
 export const metadata: Metadata = {
   title: 'Toram Online Statting Simulator - Toram Online Database',
-  description:
-    'Test statting formulas and calculate success rates for Toram Online equipment enhancement',
+  description: 'Test statting formulas and calculate success rates for Toram Online equipment enhancement',
 }
 
 export default function AutoStattingPage() {
@@ -15,13 +15,14 @@ export default function AutoStattingPage() {
           Toram Online Statting Simulator
         </h1>
         <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-          Test statting formulas and calculate success rates for equipment enhancement. Based on
-          actual Toram Online mechanics like Tanaka's Buki Proper and SparkyNeko's simulator.
+          Test statting formulas and calculate success rates for equipment enhancement. 
+          Based on actual Toram Online mechanics like Tanaka's Buki Proper and SparkyNeko's simulator.
         </p>
       </div>
 
-      <div className="container py-12">
+      <div className="container py-12 space-y-12">
         <ToramStattingSimulator />
+        <StattingWorkbench />
       </div>
     </div>
   )
